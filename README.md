@@ -158,6 +158,12 @@ That ordering — **load state → teach → student builds → verify real outp
 
 ## Notable design decisions
 
+The whole system is *rules and state* — no server, no database. Eight choices carry most of the weight; here they are at a glance, with the detail below.
+
+<p align="center">
+  <img src="assets/acc-design-decisions.png" alt="Eight design decisions at a glance: rulebook as source of truth, files not a database, cross-session memory, context budget, verify-before-handoff, live docs via Context7, taught to industry demand, and git in the student's hands" width="100%">
+</p>
+
 - **The rulebook is the source of truth.** All coaching behavior — the no-code rule, the grading rubric, the enforcement ramp, the guardrails — lives in one versioned `CLAUDE.md` contract the agent reloads every session. Changing how the coach behaves is a documented edit, not a code deploy.
 - **State is files, not a database.** A single hot `progress.md` holds current state, skill mastery, focus areas, and a spaced-repetition schedule; graded reviews are co-located with the work they grade. Anyone can read the whole story of one unit of work by opening one folder.
 - **Persistent, cross-session learner memory.** A durable memory store (~60 entries and growing) records who the learner is and how they learn — preferences, recurring error patterns, format asks, frustration triggers — so coaching compounds across sessions instead of resetting each time.
