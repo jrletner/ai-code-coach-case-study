@@ -35,6 +35,51 @@ There is no separate web app, database, or billing to run. The entire coach is a
 
 ---
 
+## How the prompt scaffolds the whole project
+
+This is the part that surprises people: **there is no application to deploy.** The entire coach is a single prompt file — a ~480-line, ~5,600-word `CLAUDE.md` operating contract — that the agent loads at the top of every session. That one file *is* the product. It doesn't just describe behavior; it dictates exactly what the agent must do, refuse, write, and where.
+
+### The rulebook: ~30 sections, each an enforceable contract
+
+`CLAUDE.md` reads less like documentation and more like a constitution. It's organized into roughly **30 titled sections**, and each one is a rule the agent has to obey on every turn — not a suggestion it can drift from. A few of them:
+
+- **Session start** — read `progress.md` first, resume from the exact "Next up," never ask "where were we?"
+- **Learn-mode gate** — teaching is *locked* until the student says `start course`; open-mode Q&A can't advance the course.
+- **Four-beat loop** — every lesson runs Tell → Show → You Do → I Check, with real-output verification.
+- **No-answers rule** — never write the student's code; help only with a different-scenario example.
+- **Verify-before-handoff** — a hard gate: compile and run every snippet before the student is allowed to see it.
+- **Grading rubric + advancement gate** — a 0–100 score, and no advancing below 60 or with an unresolved blocker.
+- **Learner guardrails (×5)** — silent detectors for frustration, copy-paste, perfectionism, and vocab gaps.
+- **File map** — the canonical spec for what gets written and *where*.
+
+<p align="center">
+  <img src="assets/acc-rulebook.png" alt="Anatomy of the CLAUDE.md rulebook — 30 sections, each an enforceable rule the agent must follow" width="100%">
+</p>
+
+Because the behavior lives in the prompt, **changing how the coach teaches is a documented, version-controlled edit — not a code deploy.** The git history of `CLAUDE.md` is a literal changelog of pedagogy: every rule traces back to a real moment the teaching needed to be tightened.
+
+### What that single prompt spawns
+
+The rulebook's *File map* section turns the prompt into a filesystem. From those instructions alone, the agent scaffolds a whole course as a disciplined tree — and holds itself to the exact folder standards it grades the student on: one responsibility per file, kebab-case names, module folders, and a graded `review.md` co-located with every piece of work.
+
+So far, that one prompt has grown into **40 lesson folders, 54 graded reviews, and 8 shared doc files, backed by 59 persistent memory entries** — all following a structure the prompt specified up front.
+
+<p align="center">
+  <img src="assets/acc-scaffold-tree.png" alt="The file tree the prompt scaffolds: rulebook, hot and cold docs, per-module lesson folders, co-located reviews" width="100%">
+</p>
+
+### Booting a session from files alone
+
+The agent is stateless between sessions, so the prompt has to *rebuild the entire teaching context from files* every time — and it does, in a fixed order the rulebook mandates: load the rulebook and live state, restore who the learner is from persistent memory, gate the mode, resume at the exact "Next up," teach, then write the new state back. Because the last thing every loop does is persist state, a session can be cleared at any breakpoint and the next one boots clean and **lossless**.
+
+<p align="center">
+  <img src="assets/acc-session-bootstrap.png" alt="Session bootstrap sequence: load rulebook, restore learner, gate mode, resume, teach and save" width="100%">
+</p>
+
+This is the whole architecture in one sentence: **a prompt that scaffolds a course, grades against real output, and rebuilds its own context from disciplined files** — no server, no database, just rules and state.
+
+---
+
 ## How the AI actually teaches
 
 The coaching behavior is the product, and it's enforced by an operating contract the agent must follow every session — not left to the model's mood.
