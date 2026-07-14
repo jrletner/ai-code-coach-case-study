@@ -1,6 +1,8 @@
 # AI Code Coach — Case Study
 
-> **An AI coding tutor that reads a student's code and coaches them — without ever writing it for them.**
+> **An AI tutor that takes a total beginner and turns them into a self-sufficient developer — one who can read, write, and explain their own code without leaning on an AI to do it for them.**
+>
+> It coaches; it never ghostwrites. Every line of code is the student's own.
 > 🚧 In active development. This repository is a written case study of the system's design.
 
 <p align="center">
