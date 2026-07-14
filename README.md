@@ -86,20 +86,30 @@ The coaching behavior is the product, and it's enforced by an operating contract
 
 **1. The no-code rule (a hard constraint).** The agent will not write, complete, or fill in a single line of the student's code. Mid-exercise help explains the *concept* with a worked example in a **completely different domain**, with different variable names, so the exercise answer can't leak. The real solution appears **only** in the post-submission review — and there's an explicit trap for the obvious workaround: try to fish the answer out by leaving "learn mode" and the agent recognizes it and redirects.
 
+<p align="center">
+  <img src="assets/acc-coach-vs-ghost.png" alt="Same question, two answers: a generic AI writes the code; the coach gives a different-scenario hint and hands the keyboard back" width="100%">
+</p>
+
 **2. The four-beat loop, every lesson.** **TELL** (teach from first principles, define jargon before use) → **SHOW** (a readable lesson plus a runnable, commented example in a *different* scenario than the exercise) → **YOU DO** (the student writes every line in their own file, with an exact run command and expected output) → **I CHECK** (the agent runs the code and grades the *real output* against the requirement). The governing rule: **"it ran" is never the same as "it's correct."**
 
 **3. It grades on evidence, not vibes.** Every submission is scored on a 0–100 rubric (Correctness · Tests · Standards · Readability · Concept grasp) written to a `review.md` file co-located with the work. Skills move through `not started → learning → practiced → mastered`, and a skill is only *mastered* after **two clean, un-hinted reps on separate, spaced occasions.**
 
 **4. Advancement gates that won't let you skip.** The student advances past a lesson only when they score **≥ 60 and have no blocking skill still below `practiced`.** Below that, the agent re-teaches the failing micro-skill in a fresh scenario; on proven strength it *accelerates* — compressing drills or offering a test-out. The pace adapts in **both** directions.
 
-**5. It stays on the lesson.** A learn-mode gate keeps the agent scoped to the current lesson and already-taught material; off-topic asks are parked on the roadmap and redirected, instead of turning into a free-for-all chatbot.
-
-**6. Silent learner guardrails.** Always-on detectors watch for frustration (stop advancing, shrink to a winnable step), copy-paste / AI-submitted work (met with *"walk me through line N — what does it do and why?"*), perfectionism (every task is time-boxed), and vocabulary gaps (periodic "define X vs Y" checks) — each one changes *how* the agent teaches on the fly.
-
 <p align="center">
   <img src="assets/acc-mastery-gate.png" alt="Mastery ladder and advancement gate: skills move from not started to mastered only on spaced, un-hinted evidence" width="100%">
 </p>
 <p align="center"><em>Every skill is scored, and no one advances past a lesson without the evidence to back it.</em></p>
+
+**5. It adapts to the learner.** The agent reads *how* the student asks and tunes verbosity, analogy, pace, tone, and feedback on the fly — terse vs. thorough, why-first vs. how-first, a new metaphor when one isn't landing — tracking a style profile in `progress.md` so it doesn't have to be re-told. Just tell it how you learn best.
+
+**6. It stays on the lesson.** A learn-mode gate keeps the agent scoped to the current lesson and already-taught material; off-topic asks are parked on the roadmap and redirected, instead of turning into a free-for-all chatbot.
+
+**7. Five silent learner guardrails.** Always-on detectors watch for **frustration** (stop advancing, shrink to a winnable step), **copy-paste / AI-submitted work** (met with *"walk me through line N — what does it do and why?"*), **perfectionism** (every task is time-boxed), a **bug-documentation ritual** (log the error, your theory, and what you tried in `issues.md` before any help), and **vocabulary gaps** (periodic "in one sentence, X vs Y?" checks) — each one quietly changes *how* the agent teaches.
+
+<p align="center">
+  <img src="assets/acc-adapts-to-you.png" alt="The agent adapts to how you ask, and runs five silent guardrails: frustration, copy-paste, time-boxing, bug-documentation, and vocabulary" width="100%">
+</p>
 
 ---
 
